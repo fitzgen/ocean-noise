@@ -13,7 +13,7 @@ WhiteNoise.prototype.onAudioProcess = function (e) {
   for (let i = 0; i < this._channels; i++) {
     let output = e.outputBuffer.getChannelData(i);
     for (let j = 0, length = output.length; j < length; j++) {
-      output[j] = Math.random() * this._channels;
+      output[j] = Math.random() * 2 - 1;
     }
   }
 };
