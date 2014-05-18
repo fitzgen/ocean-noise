@@ -1,11 +1,7 @@
-# Sweet.js App Template
+# Ocean Noise
 
-A quick template for building apps with Sweet.js and Grunt.
+Makes soothing ocean noises.
 
-    npm install
-
-    # To compile from `src` to `build` w/ Sweet.js:
-    grunt build
-
-    # To run a local server, watch files for changes, and recompile on demand:
-    grunt
+    git clone https://github.com/fitzgen/ocean-noise.git
+    cd ocean-noise/
+    python -m SimpleHTTPServer
