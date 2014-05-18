@@ -14,7 +14,7 @@ gainNode.gain.value = 1;
 gainNode.connect(context.destination);
 
 const filterNode = context.createBiquadFilter();
-filterNode.type = 0; // Low Pass Filter
+filterNode.type = "lowpass";
 
 // Fucking magic numbers; no idea what the scale for Q is, this just sounds
 // alright.
