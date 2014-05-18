@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+    font-family: Helvetica;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    align-content: center;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    align-content: center;
+}
+
+.flex1 {
+    flex: 1 1 auto;
+    margin: 1em;
+}
+
+.align-center {
+    align-self: center;
+}
+
+#img-container {
+    text-align: center;
+}
+
+h2, button {
+    font-size: 1.5em;
+    font-weight: bold;
+}

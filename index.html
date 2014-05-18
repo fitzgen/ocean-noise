@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Ocean Noise</title>
+    <link rel="stylesheet" href="index.css" />
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  </head>
+  <body class="vbox">
+    <div class="hbox">
+      <button id="toggle" class="flex1"></button>
+      <label class="flex1 hbox">
+        <h2 class="flex1">Volume:</h2>
+        <input id="volume" type="range" min="0" max="100" class="flex1 align-center" />
+      </label>
+    </div>
+    <div id="img-container">
+      <img src="ocean.gif" />
+    </div>
+
+    <script src="src/mori.js"></script>
+    <script src="src/white-noise.js" type="application/javascript;version=1.8"></script>
+    <script src="src/index.js" type="application/javascript;version=1.8"></script>
+  </body>
+</html>
