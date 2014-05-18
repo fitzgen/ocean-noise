@@ -1,6 +1,6 @@
-function WhiteNoise(context, { channels, bufferSize }) {
-  this._channels = channels;
-  this._bufferSize = bufferSize;
+function WhiteNoise(context, opts) {
+  this._channels = opts.channels;
+  this._bufferSize = opts.bufferSize;
 
   this._node = context.createScriptProcessor(this._bufferSize, 1, this._channels);
   this._node.onaudioprocess = this.onAudioProcess.bind(this);
@@ -10,9 +10,9 @@ function WhiteNoise(context, { channels, bufferSize }) {
 }
 
 WhiteNoise.prototype.onAudioProcess = function (e) {
-  for (let i = 0; i < this._channels; i++) {
-    let output = e.outputBuffer.getChannelData(i);
-    for (let j = 0, length = output.length; j < length; j++) {
+  for (var i = 0; i < this._channels; i++) {
+    var output = e.outputBuffer.getChannelData(i);
+    for (var j = 0, length = output.length; j < length; j++) {
       output[j] = Math.random() * 2 - 1;
     }
   }
