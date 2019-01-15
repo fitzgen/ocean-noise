@@ -7,55 +7,6 @@ const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const context = new AudioContext();
-
-const gainNode = context.createGain();
-gainNode.gain.value = 1;
-gainNode.connect(context.destination);
-
-const filterNode = context.createBiquadFilter();
-filterNode.type = "lowpass";
-
-// Fucking magic numbers; no idea what the scale for Q is, this just sounds
-// alright.
-const qVals = [8, 9, 10, 11, 10, 9];
-let qValIndex = 0;
-(function qValueLoop() {
-  filterNode.Q.value = qVals[qValIndex++ % qVals.length];
-  qValIndex = qValIndex % qVals.length;
-  setTimeout(qValueLoop, 6000 + Math.random() * 3);
-}());
-
-const fVals = [670, 680, 690, 700, 710, 720, 730, 740, 750, 740, 730, 720, 710, 700, 690, 680];
-let fValIndex = 0;
-(function frequencyValueLoop(){
-  filterNode.frequency.value = fVals[fValIndex++ % fVals.length];
-  fValIndex = fValIndex % fVals.length;
-  setTimeout(frequencyValueLoop, 7000 + Math.random() * 3);
-}());
-
-filterNode.connect(gainNode);
-
-const oscillationNode = context.createGain();
-let rampToLow = true;
-(function oscillationLoop () {
-  const rand = Math.random();
-  oscillationNode.gain.exponentialRampToValueAtTime(
-    rampToLow ? .3 : 1,
-    context.currentTime + 4 + rand
-  );
-  rampToLow = !rampToLow;
-  setTimeout(oscillationLoop, 4000 + rand * 3);
-}());
-oscillationNode.connect(filterNode);
-
-const noise = new WhiteNoise(context, {
-  channels: 2,
-  bufferSize: 16384
-});
-
-////////////////////////////////////////////////////////////////////////////////
-
 let state;
 
 const logState = () => console.log(pretty(state));
@@ -93,22 +44,20 @@ const scheduleRender = (function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 const toggleNoise = () => {
-  if (get(state, "playing")) {
-    noise.disconnect();
+  const noise = get(state, "noise");
+  const playing = get(state, "playing");
+  if (playing) {
+    noise.pause();
+    updateState(conj(state, map({ playing: false })));
   } else {
-    noise.connect(oscillationNode);
+    noise.play();
+    updateState(conj(state, map({ playing: true })));
   }
-
-  updateState(conj(state, map({
-    playing: !get(state, "playing")
-  })));
 };
 
 const updateVolume = newVolume => {
-  const percentage = newVolume / 100;
-  const gain = percentage * percentage;
-  gainNode.gain.value = gain;
-
+  const noise = get(state, "noise");
+  noise.setVolume(newVolume);
   updateState(conj(state, map({
     volume: newVolume
   })));
@@ -134,7 +83,8 @@ volume.addEventListener("input", _ => {
 function init() {
   updateState(map({
     volume: 100,
-    playing: false
+    playing: false,
+    noise: new WhiteNoise(),
   }));
 }
 
